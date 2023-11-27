@@ -115,7 +115,7 @@ public class EncryptionMachine {
      * @return The encrypted word
      * @throws IllegalArgumentException If input is null or an empty String
      */
-    private static String encryptWord(String word) throws IllegalArgumentException {
+    public static String encryptWord(String word) throws IllegalArgumentException {
 
         if(word != null && word.length()>0) { //make sure input is valid
 
