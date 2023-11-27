@@ -63,4 +63,64 @@ class EncryptionMachineTest {
         assertTrue(out.toString().contains("Your encrypted key is:"));
         assertTrue(out.toString().contains("\"hello\" has been encrypted to:"));
     }
+
+    @Test
+    void testNumberFormatExceptionForWordCount() {
+        String input = "secret\nnotANumber\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setIn(in);
+        System.setOut(new PrintStream(out));
+
+        EncryptionMachine.main(new String[0]);
+
+        String output = out.toString();
+        assertTrue(output.contains("That was not a number..."));
+        assertTrue(output.contains("Stopping Caesar Cipher Program."));
+    }
+
+    @Test
+    void testNegativeWordCount() {
+        String input = "secret\n-1\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setIn(in);
+        System.setOut(new PrintStream(out));
+
+        EncryptionMachine.main(new String[0]);
+
+        String output = out.toString();
+        assertTrue(output.contains("Word count must be positive"));
+        assertTrue(output.contains("Stopping Caesar Cipher Program."));
+    }
+
+    @Test
+    void testHandleErrorForInvalidKey() {
+        String input = "123\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setIn(in);
+        System.setOut(new PrintStream(out));
+
+        EncryptionMachine.main(new String[0]);
+
+        String output = out.toString();
+        assertTrue(output.contains("Invalid character:"));
+        assertTrue(output.contains("Stopping Caesar Cipher Program."));
+    }
+
+    @Test
+    void testHandleErrorForSpaceInKey() {
+        String input = "hello world\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setIn(in);
+        System.setOut(new PrintStream(out));
+
+        EncryptionMachine.main(new String[0]);
+
+        String output = out.toString();
+        assertTrue(output.contains("Words cannot contain spaces"));
+        assertTrue(output.contains("Stopping Caesar Cipher Program."));
+    }
 }
